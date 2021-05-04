@@ -2,7 +2,10 @@
 #define __SELECT_HPP__
 
 #include <cstring>
+
 using namespace std;
+#include <iostream>
+
 
 class Select
 {
@@ -38,6 +41,7 @@ public:
     // Derived classes can instead implement this simpler interface.
     virtual bool select(const std::string& s) const = 0;
 };
+
 
 class Select_And: public Select{
    protected:
@@ -77,21 +81,20 @@ class Select_Or: public Select{
         }
 };
 
-///////////////////
- 
+
+
 class Select_Contains: public Select{
    protected:
-        string name;
+        std::string name;
         int col;
-
    public:
-        Select_Contains(const Spreadsheet* sheet, const string& c, const string& n) {
+        Select_Contains(const Spreadsheet* sheet, const std::string& c, const std::string& n) {
                 col = sheet->get_column_by_name(c);
                 name = n;
         }
 
         virtual bool select(const Spreadsheet* sheet, int row) const {
-                string s = sheet->cell_data(row, col);
+                std::string s = sheet->cell_data(row, col);
                 if(strstr(s.c_str(),name.c_str())) {
                         return true;
                 }
@@ -103,10 +106,12 @@ class Select_Not: public Select{
    protected:
         Select* sel;
 
-   public:
+  /* public:
 	~Select_Not() {
 		delete sel;
-	}
+	} */
+
+   public:
 
         Select_Not(Select* s) {
                 sel = s;
