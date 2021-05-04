@@ -29,29 +29,6 @@ TEST(SpreadsheetTest, blank) {
         EXPECT_EQ(test, "");
 }
 
-/*
-TEST(SelectOr, OrContains) {
-
-Spreadsheet sh;
-sh.set_column_names({"First", "Last", "Age"});
-sh.add_row({"Diane Dole", "20"});
-sh.add_row({"Dominick Dole", "22"});
-sh.add_row({"David Dole", "22"});
-sh.add_row({"Amanda Andrews", "22"});
-//sh.add_row({"Brian Becker", "21"});
-sh.set_selection(
-	//new Select_Or(
-        //new Select_Contains(&sh, "First", "Amanda"),
-	new Select_Or(
-                new Select_Contains(&sh, "Last", "Dole"),
-		new Select_Contains(&sh, "Age", "22")));
-
-        stringstream strstream;
-        sh.print_selection(strstream);
-        //string test = strstream.str();
-        EXPECT_EQ(strstream.str(), "Diana Dole 20 \nDominick Dole 22 \nDavid Dole 22 \nAmanda Andrews 22\n");
-}
-*/
 
 TEST(SelectOr, NoMatch)
 {
@@ -78,10 +55,10 @@ TEST(SelectOr, OrNot){
 	sh.set_selection(
 		new Select_Or(
 			new Select_Not(
-				new Select_Contains(&sh, "Last", "Dole")),
-			new Select_Contains(&sh, "Last", "Becker"))); 
+				new Select_Contains(&sh, "First", "Dole")),
+			new Select_Contains(&sh, "First", "Becker"))); 
 	stringstream s;
 	sh.print_selection(s);
-	EXPECT_EQ(s.str(), "Diane Dole 20 \nDominick Dole 22 \nDavid Dole 22 \nAmanda Andrews 22 \nBrian Becker 21 \n");
+	EXPECT_EQ(s.str(), "Amanda Andrews 22 \nBrian Becker 21 \n");
 }
 #endif
