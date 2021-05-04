@@ -106,12 +106,10 @@ class Select_Not: public Select{
    protected:
         Select* sel;
 
-  /* public:
+   public:
 	~Select_Not() {
 		delete sel;
-	} */
-
-   public:
+	} 
 
         Select_Not(Select* s) {
                 sel = s;
