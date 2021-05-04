@@ -61,3 +61,4 @@ void Spreadsheet::print_selection(std::ostream& out) const {
 		}
 	}
 }
+

@@ -2,7 +2,10 @@
 #define __SELECT_HPP__
 
 #include <cstring>
+
+using namespace std;
 #include <iostream>
+
 
 class Select
 {
@@ -39,6 +42,47 @@ public:
     virtual bool select(const std::string& s) const = 0;
 };
 
+
+class Select_And: public Select{
+   protected:
+        Select* sel1;
+        Select* sel2;
+   public:
+	~Select_And() {
+		delete sel1;
+		delete sel2;
+}
+
+        Select_And(Select* s1, Select* s2) {
+                sel1 = s1;
+                sel2 = s2;
+        }
+        virtual bool select(const Spreadsheet* sheet, int row) const {
+                return (sel1->select(sheet,row) && sel2->select(sheet,row));
+        }
+};
+
+class Select_Or: public Select{
+   protected:
+        Select* sel1;
+        Select* sel2;
+   public:
+	~Select_Or() {
+	delete sel1;
+	delete sel2;
+	}
+
+        Select_Or(Select* s1, Select* s2) {
+                sel1 = s1;
+                sel2 = s2;
+        }
+        virtual bool select(const Spreadsheet* sheet, int row) const {
+                return (sel1->select(sheet,row) || sel2->select(sheet,row));
+        }
+};
+
+
+
 class Select_Contains: public Select{
    protected:
         std::string name;
@@ -61,7 +105,14 @@ class Select_Contains: public Select{
 class Select_Not: public Select{
    protected:
         Select* sel;
+
+  /* public:
+	~Select_Not() {
+		delete sel;
+	} */
+
    public:
+
         Select_Not(Select* s) {
                 sel = s;
         }
@@ -70,4 +121,5 @@ class Select_Not: public Select{
                 return !sel->select(sheet,row);
         }
 };
+
 #endif //__SELECT_HPP__
