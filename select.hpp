@@ -58,4 +58,16 @@ class Select_Contains: public Select{
         }
 };
 
+class Select_Not: public Select{
+   protected:
+        Select* sel;
+   public:
+        Select_Not(Select* s) {
+                sel = s;
+        }
+
+        virtual bool select(const Spreadsheet* sheet, int row) const {
+                return !sel->select(sheet,row);
+        }
+};
 #endif //__SELECT_HPP__
