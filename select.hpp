@@ -2,6 +2,7 @@
 #define __SELECT_HPP__
 
 #include <cstring>
+using namespace std;
 
 class Select
 {
@@ -43,6 +44,11 @@ class Select_And: public Select{
         Select* sel1;
         Select* sel2;
    public:
+	~Select_And() {
+		delete sel1;
+		delete sel2;
+}
+
         Select_And(Select* s1, Select* s2) {
                 sel1 = s1;
                 sel2 = s2;
@@ -57,12 +63,57 @@ class Select_Or: public Select{
         Select* sel1;
         Select* sel2;
    public:
+	~Select_Or() {
+	delete sel1;
+	delete sel2;
+	}
+
         Select_Or(Select* s1, Select* s2) {
                 sel1 = s1;
                 sel2 = s2;
         }
         virtual bool select(const Spreadsheet* sheet, int row) const {
                 return (sel1->select(sheet,row) || sel2->select(sheet,row));
+        }
+};
+
+///////////////////
+ 
+class Select_Contains: public Select{
+   protected:
+        string name;
+        int col;
+
+   public:
+        Select_Contains(const Spreadsheet* sheet, const string& c, const string& n) {
+                col = sheet->get_column_by_name(c);
+                name = n;
+        }
+
+        virtual bool select(const Spreadsheet* sheet, int row) const {
+                string s = sheet->cell_data(row, col);
+                if(strstr(s.c_str(),name.c_str())) {
+                        return true;
+                }
+                return false;
+        }
+};
+
+class Select_Not: public Select{
+   protected:
+        Select* sel;
+
+   public:
+	~Select_Not() {
+		delete sel;
+	}
+
+        Select_Not(Select* s) {
+                sel = s;
+        }
+
+        virtual bool select(const Spreadsheet* sheet, int row) const {
+                return !sel->select(sheet,row);
         }
 };
 
