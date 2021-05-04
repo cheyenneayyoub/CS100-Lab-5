@@ -2,6 +2,7 @@
 #include "select.hpp"
 #include "spreadsheet.cpp"
 #include "gtest/gtest.h"
+#include "PrintTest.hpp"
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
